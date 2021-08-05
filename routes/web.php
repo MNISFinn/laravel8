@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PauseController;
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,3 +19,5 @@ Route::get('/', function () {
 });
 
 Route::get('/test', [PauseController::class, 'test']);
+Route::get('/login', [LoginController::class, 'login']);
+Route::get('/get_permission', [LoginController::class, 'get_permission']);
