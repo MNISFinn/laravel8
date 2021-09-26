@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\AdminMenu;
 use App\Models\AdminMenuItem;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller {
 
@@ -14,6 +15,7 @@ class LoginController extends Controller {
     }
 
     public function login() {
+        Log::info(22);
         $credentials = request(['name', 'password']);
         if (!$token = auth('admin')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -42,10 +44,13 @@ class LoginController extends Controller {
      */
     protected function respondWithToken($token) {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'permission' => $this->respondWithPermission()
+            'code' => 0,
+            'data' => [
+                'token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth('api')->factory()->getTTL() * 60,
+                // 'permission' => $this->respondWithPermission()
+            ]
         ]);
     }
 

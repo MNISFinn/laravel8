@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PauseController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\admin\LoginController as AdminLogin;
+use App\Http\Controllers\admin\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +29,11 @@ Route::group([
     'jwt.role:admin',
     'jwt.auth'
 ], function () {
+    // 后台管理员登录登出、刷新token
     Route::get('/admin_login', [AdminLogin::class, 'login']);
-    Route::get('/admin_info', [AdminLogin::class, 'me']);
+//    Route::get('/admin_info', [AdminLogin::class, 'me']);
     Route::get('/admin_logout', [AdminLogin::class, 'logout']);
     Route::get('/admin_refresh', [AdminLogin::class, 'refresh']);
+    // 后台管理员权限
+    Route::get('get_permission', [PermissionController::class, 'getPermission']);
 });
