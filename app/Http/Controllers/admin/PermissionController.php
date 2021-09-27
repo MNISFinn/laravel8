@@ -19,7 +19,6 @@ class PermissionController extends Controller {
     }
 
     public function getPermission(Request $request) {
-        Log::info(2222);
         $token = $request['user'];
         $admin = JWTAuth::setToken($token)->authenticate();
         if (!$admin) {

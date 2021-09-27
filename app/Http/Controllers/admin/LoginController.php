@@ -15,7 +15,6 @@ class LoginController extends Controller {
     }
 
     public function login() {
-        Log::info(22);
         $credentials = request(['name', 'password']);
         if (!$token = auth('admin')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
