@@ -5,6 +5,7 @@ use App\Http\Controllers\PauseController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\admin\LoginController as AdminLogin;
 use App\Http\Controllers\admin\PermissionController;
+use App\Http\Controllers\user\IndexController as UserIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,5 @@ Route::group([
     // 后台管理员权限
     Route::get('get_permission', [PermissionController::class, 'getPermission']);
 });
+
+Route::post('/user_list', [UserIndex::class, 'userList']);
