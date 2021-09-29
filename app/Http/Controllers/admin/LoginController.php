@@ -42,15 +42,13 @@ class LoginController extends Controller {
      * @return JsonResponse
      */
     protected function respondWithToken($token) {
-        return response()->json([
-            'code' => 0,
-            'data' => [
-                'token' => $token,
-                'token_type' => 'bearer',
-                'expires_in' => auth('api')->factory()->getTTL() * 60,
-                // 'permission' => $this->respondWithPermission()
-            ]
-        ]);
+        $data = [
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            // 'permission' => $this->respondWithPermission()
+        ];
+        return responseResult(0, '登录成功', $data);
     }
 
     /**

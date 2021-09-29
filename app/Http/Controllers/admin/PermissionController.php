@@ -28,12 +28,7 @@ class PermissionController extends Controller {
         $permission = Admin::getPermission($admin_id);
         $menu = unserialize($permission->permission_detail);
         $menus = $this->getPermissionMenus($menu);
-        $result = [
-            'code' => 0,
-            'message' => '获取成功',
-            'data' => $menus
-        ];
-        return $result;
+        return responseResult(0, '获取成功', $menus);
     }
 
     /**
