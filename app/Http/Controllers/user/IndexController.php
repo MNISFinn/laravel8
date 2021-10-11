@@ -38,7 +38,7 @@ class IndexController extends Controller {
         $open_id   = $this->weChatAuthorization($code)['openid'];
         $name      = $request['name'];
         $user_info = DB::table('user')
-            ->where(['wx_open_id' => $open_id])->limit(1)
+            ->where(['wechat_open_id' => $open_id])->limit(1)
             ->get()->toArray();
         if (empty($user_info)) {
             $insert_data = [
