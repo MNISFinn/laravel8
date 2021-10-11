@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\admin\LoginController as AdminLogin;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\user\IndexController as UserIndex;
+use App\Http\Controllers\test\IndexController as TestIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,8 @@ Route::group([
 });
 
 Route::post('/user_list', [UserIndex::class, 'userList']);
+Route::post('/user_login', [UserIndex::class, 'login']);
+
+// 调试
+Route::post('/wx_test', [TestIndex::class, 'login']);
+Route::post('/wx_decryt', [TestIndex::class, 'decryt']);

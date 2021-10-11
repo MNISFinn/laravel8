@@ -25,3 +25,5 @@ Homestead.json
 .DS_Store
 .idea/
 composer.lock
+
+app/Http/Controllers/test/
