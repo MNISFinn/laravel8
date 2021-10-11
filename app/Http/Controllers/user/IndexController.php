@@ -44,7 +44,8 @@ class IndexController extends Controller {
             $insert_data = [
                 'user_name'      => $name,
                 'wechat_name'    => $name,
-                'wechat_open_id' => $open_id
+                'wechat_open_id' => $open_id,
+                'register_time'  => time()
             ];
             DB::table('user')->insert($insert_data);
             return responseResult(self::SUCCESSFUL, '登录成功');
