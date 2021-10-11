@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PauseController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\admin\LoginController as AdminLogin;
 use App\Http\Controllers\admin\PermissionController;
@@ -23,7 +22,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', [PauseController::class, 'test']);
 Route::get('/login', [LoginController::class, 'login']);
 Route::get('/get_permission', [LoginController::class, 'get_permission']);
 
@@ -42,7 +40,6 @@ Route::group([
 
 Route::post('/user_list', [UserIndex::class, 'userList']);
 Route::post('/user_login', [UserIndex::class, 'login']);
-Route::post('/user_authorization', [UserIndex::class, 'weChatAuthorization']);
 
 // 调试
 Route::post('/wx_test', [TestIndex::class, 'login']);
