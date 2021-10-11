@@ -51,7 +51,7 @@ class IndexController extends Controller {
      * @param Request $request
      * @return \Illuminate\Http\Client\Response
      */
-    public function wechat_authorization(Request $request) {
+    public function weChatAuthorization(Request $request) {
         $wx_config  = config('wechat');
         $url        = $wx_config['authorization_code_url'];
         $app_id     = $wx_config['app_id'];

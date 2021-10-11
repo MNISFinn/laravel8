@@ -42,6 +42,7 @@ Route::group([
 
 Route::post('/user_list', [UserIndex::class, 'userList']);
 Route::post('/user_login', [UserIndex::class, 'login']);
+Route::post('/user_authorization', [UserIndex::class, 'weChatAuthorization']);
 
 // 调试
 Route::post('/wx_test', [TestIndex::class, 'login']);
