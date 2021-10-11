@@ -35,7 +35,7 @@ class IndexController extends Controller {
         if (!$code) {
             return responseResult(self::EMPTY_CODE, 'code不能为空');
         }
-        $open_id   = $this->weChatAuthorization($code);
+        $open_id   = $this->weChatAuthorization($code)['openid'];
         $name      = $request['name'];
         $user_info = DB::table('user')
             ->where(['wx_open_id' => $open_id])->limit(1)
