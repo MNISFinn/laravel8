@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\AdminMenu;
 use App\Models\AdminMenuItem;
-use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller {
 
@@ -43,9 +42,9 @@ class LoginController extends Controller {
      */
     protected function respondWithToken($token) {
         $data = [
-            'token' => $token,
+            'token'      => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'expires_in' => auth('admin')->factory()->getTTL() * 60,
             // 'permission' => $this->respondWithPermission()
         ];
         return responseResult(0, '登录成功', $data);
@@ -57,10 +56,10 @@ class LoginController extends Controller {
      */
     protected function respondWithPermission() {
         $admin_info = $this->me();
-        $admin_id = $admin_info->admin_id;
+        $admin_id   = $admin_info->admin_id;
         $permission = Admin::getPermission($admin_id);
-        $menu = unserialize($permission->permission_detail);
-        $menus = $this->getPermissionMenus($menu);
+        $menu       = unserialize($permission->permission_detail);
+        $menus      = $this->getPermissionMenus($menu);
         return $menus;
     }
 
@@ -70,17 +69,17 @@ class LoginController extends Controller {
      * @return array
      */
     protected function getPermissionMenus($menu_array) {
-        $permission_menus = [];
-        $menu_list = AdminMenu::getList();
-        $menu_list_by_id = array_column($menu_list, null, 'menu_id');
-        $menu_item_list = AdminMenuItem::getList();
+        $permission_menus     = [];
+        $menu_list            = AdminMenu::getList();
+        $menu_list_by_id      = array_column($menu_list, null, 'menu_id');
+        $menu_item_list       = AdminMenuItem::getList();
         $menu_item_list_by_id = array_column($menu_item_list, null, 'menu_item_id');
         if (!empty($menu_array)) {
             foreach ($menu_array as $value) {
                 $permission_menus[] = [
-                    'menu_id' => $value['menu'],
-                    'menu_name' => $menu_list_by_id[$value['menu']]['menu_name'],
-                    'menu_item_id' => $value['menu_item'],
+                    'menu_id'        => $value['menu'],
+                    'menu_name'      => $menu_list_by_id[$value['menu']]['menu_name'],
+                    'menu_item_id'   => $value['menu_item'],
                     'menu_item_name' => $menu_item_list_by_id[$value['menu_item']]['item_name']
                 ];
             }

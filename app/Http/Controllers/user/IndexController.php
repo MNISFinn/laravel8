@@ -13,16 +13,8 @@ class IndexController extends Controller {
     const SUCCESSFUL = 0;
     const EMPTY_CODE = 1000;
 
-    /**
-     * 获取用户列表
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function userList(Request $request) {
-        $page_size = $request['page_size'];
-        $page_num  = $request['page_num'];
-        $list      = User::getUserList($page_size, $page_num);
-        return responseResult(self::SUCCESSFUL, '获取成功', $list);
+    public function __construct() {
+        $this->middleware('auth:api', ['except' => ['login']]);
     }
 
     /**
@@ -31,27 +23,57 @@ class IndexController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request) {
+        $name = $request['name'];
         $code = $request['code'];
         if (!$code) {
             return responseResult(self::EMPTY_CODE, 'code不能为空');
         }
         $open_id   = $this->weChatAuthorization($code)['openid'];
-        $name      = $request['name'];
-        $user_info = DB::table('user')
-            ->where(['wechat_open_id' => $open_id])->limit(1)
-            ->get()->toArray();
+        $user_info = User::where(['wechat_openid' => $open_id])->first();
         if (empty($user_info)) {
             $insert_data = [
-                'user_name'      => $name,
-                'wechat_name'    => $name,
-                'wechat_open_id' => $open_id,
-                'register_time'  => time()
+                'user_name'     => $name,
+                'wechat_name'   => $name,
+                'wechat_openid' => $open_id,
+                'register_time' => time()
             ];
             DB::table('user')->insert($insert_data);
-            return responseResult(self::SUCCESSFUL, '登录成功');
-        } else {
-            return responseResult(self::SUCCESSFUL, '登录成功');
+            $user_info = User::where(['wechat_openid' => $open_id])->first();
         }
+
+        if (!$token = auth('api')->login($user_info)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
+
+    }
+
+    public function me() {
+        return response()->json(auth('api')->user())->getData();
+    }
+
+    public function logout() {
+        auth('api')->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function refresh() {
+        return $this->respondWithToken(auth('api')->refresh());
+    }
+
+    /**
+     * @param $token
+     * @return JsonResponse
+     */
+    protected function respondWithToken($token) {
+        $data = [
+            'token'      => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60
+        ];
+        return responseResult(self::SUCCESSFUL, '登录成功', $data);
     }
 
     /**
