@@ -45,7 +45,12 @@ class IndexController extends Controller {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        $data = [
+            'token'     => $token,
+            'user_name' => $user_info['user_name']
+        ];
+//        return $this->respondWithToken($token);
+        return responseResult(self::SUCCESSFUL, '登录成功', $data);
 
     }
 
