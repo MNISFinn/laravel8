@@ -56,7 +56,8 @@ class IndexController extends Controller {
     }
 
     public function me() {
-        return response()->json(auth('api')->user())->getData();
+        $data = auth('api')->user();
+        return responseResult(self::SUCCESSFUL, '登录成功', $data);
     }
 
     public function logout() {
