@@ -45,11 +45,8 @@ class IndexController extends Controller {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $data = [
-            'token'     => $token,
-            'user_name' => $user_info['user_name']
-        ];
-//        return $this->respondWithToken($token);
+        $data              = $this->respondWithToken($token);
+        $data['user_name'] = $user_info['user_name'];
         return responseResult(self::SUCCESSFUL, '登录成功', $data);
 
     }
@@ -76,7 +73,7 @@ class IndexController extends Controller {
         $data = [
             'token'      => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60 * 5 // 5小时
         ];
         return responseResult(self::SUCCESSFUL, '登录成功', $data);
     }
