@@ -23,8 +23,9 @@ class IndexController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request) {
-        $name = $request['name'];
-        $code = $request['code'];
+        $name   = $request['name'];
+        $code   = $request['code'];
+        $avatar = $request['avatar'];
         if (!$code) {
             return responseResult(self::EMPTY_CODE, 'code不能为空');
         }
@@ -32,12 +33,22 @@ class IndexController extends Controller {
         $user_info = User::where(['wechat_openid' => $open_id])->first();
         if (empty($user_info)) {
             $insert_data = [
-                'user_name'     => $name,
-                'wechat_name'   => $name,
-                'wechat_openid' => $open_id,
-                'register_time' => time()
+                'user_name'       => $name,
+                'wechat_name'     => $name,
+                'wechat_openid'   => $open_id,
+                'avatar'          => $avatar,
+                'register_time'   => time(),
+                'last_login_time' => time()
             ];
             DB::table('user')->insert($insert_data);
+            $user_info = User::where(['wechat_openid' => $open_id])->first();
+        } else {
+            $update_data = [
+                'wechat_name'     => $name,
+                'avatar'          => $avatar,
+                'last_login_time' => time()
+            ];
+            DB::table('user')->where(['wechat_openid' => $open_id])->update($update_data);
             $user_info = User::where(['wechat_openid' => $open_id])->first();
         }
 
