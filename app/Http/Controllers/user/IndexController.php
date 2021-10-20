@@ -60,7 +60,10 @@ class IndexController extends Controller {
             'token'      => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60 * 5, // 5小时
-            'user_name'  => $user_info['user_name']
+            'user_info'  => [
+                'user_name'   => $user_info['user_name'],
+                'user_avatar' => $user_info['avatar']
+            ],
         ];
         return responseResult(self::SUCCESSFUL, '登录成功', $data);
 
