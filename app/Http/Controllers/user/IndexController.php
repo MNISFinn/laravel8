@@ -78,7 +78,10 @@ class IndexController extends Controller {
 
     public function me() {
         $data = auth('api')->user();
-        unset($data['wechat_open_id']);
+        // 判断是不是配送员
+        $is_deliver         = Deliver::isDeliver($data['user_id']);
+        $data['is_deliver'] = $is_deliver;
+        unset($data['wechat_openid']);
         return responseResult(self::SUCCESSFUL, '登录成功', $data);
     }
 
