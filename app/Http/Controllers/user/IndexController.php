@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Deliver;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -23,9 +24,10 @@ class IndexController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request) {
-        $name   = $request['name'];
-        $code   = $request['code'];
-        $avatar = $request['avatar'];
+        $name       = $request['name'];
+        $code       = $request['code'];
+        $avatar     = $request['avatar'];
+        $is_deliver = false;
         if (!$code) {
             return responseResult(self::EMPTY_CODE, 'code不能为空');
         }
@@ -50,6 +52,8 @@ class IndexController extends Controller {
             ];
             DB::table('user')->where(['wechat_openid' => $open_id])->update($update_data);
             $user_info = User::where(['wechat_openid' => $open_id])->first();
+            // 判断是不是配送员
+            $is_deliver = Deliver::isDeliver($user_info['user_id']);
         }
 
         if (!$token = auth('api')->login($user_info)) {
@@ -62,7 +66,10 @@ class IndexController extends Controller {
             'expires_in' => auth('api')->factory()->getTTL() * 60 * 5, // 5小时
             'user_info'  => [
                 'user_name'   => $user_info['user_name'],
-                'user_avatar' => $user_info['avatar']
+                'user_avatar' => $user_info['avatar'],
+                'mobile'      => $user_info['mobile'],
+                'email'       => $user_info['email'],
+                'is_deliver'  => $is_deliver
             ],
         ];
         return responseResult(self::SUCCESSFUL, '登录成功', $data);
@@ -71,6 +78,7 @@ class IndexController extends Controller {
 
     public function me() {
         $data = auth('api')->user();
+        unset($data['wechat_open_id']);
         return responseResult(self::SUCCESSFUL, '登录成功', $data);
     }
 
