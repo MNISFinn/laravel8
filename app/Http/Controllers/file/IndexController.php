@@ -9,7 +9,7 @@ class IndexController extends Controller {
 
     const SUCCESS = 0;
 
-    public function upload(Request $request) {
+    public function uploadFile(Request $request) {
         $bucket = $request['bucket'];
         $files = $request['files'];
         $path = uploadFileToCOS($files, $bucket);

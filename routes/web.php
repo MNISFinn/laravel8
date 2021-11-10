@@ -50,5 +50,5 @@ Route::group([
     Route::post('/user_token_refresh', [UserIndex::class, 'refresh']);
     Route::post('/user_info', [UserIndex::class, 'me']);
     // COS对象存储
-    Route::post('/upload_file', [FileIndex::class, 'upload_file']);
+    Route::post('/upload_file', [FileIndex::class, 'uploadFile']);
 });
