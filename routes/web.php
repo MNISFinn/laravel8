@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\LoginController as AdminLogin;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\user\IndexController as UserIndex;
+use App\Http\Controllers\file\IndexController as FileIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,10 @@ Route::group([
     'jwt.role:user',
     'jwt.auth'
 ], function () {
+    // 用户登录
     Route::post('/user_login', [UserIndex::class, 'login']);
     Route::post('/user_token_refresh', [UserIndex::class, 'refresh']);
     Route::post('/user_info', [UserIndex::class, 'me']);
+    // COS对象存储
+    Route::post('/upload_file', [FileIndex::class, 'upload_file']);
 });

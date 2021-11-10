@@ -6,6 +6,9 @@
  * Time: 21:54
  */
 
+use Qcloud\Cos\Client;
+use Illuminate\Support\Facades\Log;
+
 /**
  * 统一接口返回格式
  */
@@ -52,5 +55,43 @@ if (!function_exists('decryptWeChatData')) {
         }
         $data = $result;
         return 0;
+    }
+}
+
+/**
+ * 上传文件到COS
+ */
+if (!function_exists('uploadFileToCOS')) {
+    function uploadFileToCOS($files, $bucket_name) {
+        $path      = [];
+        $appId     = env('COS_APP_ID');
+        $secretId  = env('COS_SECRET_ID');
+        $secretKey = env('COS_SECRET_KEY');
+        $region    = env('COS_REGION');
+        $cosClient = new Client([
+            'region'      => $region,
+            'schema'      => 'https', //协议头部，默认为http
+            'credentials' => [
+                'secretId'  => $secretId,
+                'secretKey' => $secretKey
+            ]
+        ]);
+        foreach ($files as $key => $file) {
+            try {
+                $bucket     = $bucket_name . '-' . $appId; //存储桶名称 格式：BucketName-APPID
+                $result     = $cosClient->putObject([
+                        'Bucket' => $bucket,
+                        'Key'    => $secretKey,
+                        'Body'   => fopen($file, 'rb')
+                    ]
+                );
+                $path[$key] = 'https://' . (array)$result['Location'];
+            } catch (\Exception $e) {
+                // 请求失败
+                Log::info('文件上传失败：' . $e);
+                break;
+            }
+        }
+        return $path;
     }
 }
