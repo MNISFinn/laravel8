@@ -84,7 +84,6 @@ if (!function_exists('uploadFileToCOS')) {
                 ]
             );
             Log::info($result);
-            $result = (array)$result;
             $path   = 'https://' . $result['Location'];
         } catch (\Exception $e) {
             // 请求失败
