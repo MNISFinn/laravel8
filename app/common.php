@@ -62,8 +62,7 @@ if (!function_exists('decryptWeChatData')) {
  * 上传文件到COS
  */
 if (!function_exists('uploadFileToCOS')) {
-    function uploadFileToCOS($file, $bucket_name) {
-        $path      = [];
+    function uploadFileToCOS($file_info, $bucket_name) {
         $appId     = env('COS_APP_ID');
         $secretId  = env('COS_SECRET_ID');
         $secretKey = env('COS_SECRET_KEY');
@@ -80,12 +79,13 @@ if (!function_exists('uploadFileToCOS')) {
             $bucket = $bucket_name . '-' . $appId; //存储桶名称 格式：BucketName-APPID
             $result = $cosClient->putObject([
                     'Bucket' => $bucket,
-                    'Key'    => $secretKey,
-                    'Body'   => fopen($file, 'rb')
+                    'Key'    => $file_info['file_name'],
+                    'Body'   => fopen($file_info['file_path'], 'rb')
                 ]
             );
             Log::info($result);
-            $path   = 'https://' . (array)$result['Location'];
+            $result = (array)$result;
+            $path   = 'https://' . $result['Location'];
         } catch (\Exception $e) {
             // 请求失败
             Log::info('文件上传失败：' . $e);
