@@ -31,7 +31,7 @@ class IndexController extends Controller {
         Log::info($path);
         $bool = $file->move($path, $file_name);
         if ($bool) {
-            $img_path = '/uploads/wchat_img/' . $file_name;
+            $img_path = public_path() . '/uploads/wchat_img/' . $file_name;
             return $img_path;
         } else {
             return '';
