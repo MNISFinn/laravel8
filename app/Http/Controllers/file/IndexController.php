@@ -15,28 +15,27 @@ class IndexController extends Controller {
         $bucket = $request['bucket'];
         $file = request()->file('file');
         Log::info($file);
-//        $path = $this->dealFile($file);
-        $path = uploadFileToCOS($file, $bucket);
+        $file_path = $this->dealFile($file);
+        $path = uploadFileToCOS($file_path, $bucket);
+        @unlink($file_path);
         return responseResult(self::SUCCESS, '上传成功', $path);
     }
 
-    /*protected function dealFile($file) {
+    protected function dealFile($file) {
         $ext       = $file->getClientOriginalExtension();//文件扩展名
         $file_name = date("YmdHis", time()) . '-' . uniqid() . "." . $ext;//保存的文件名
-        if (!in_array($ext, ['jpg', 'jpeg', 'gif', 'png'])) return response()->json(err('文件类型不是图片'));
+//        if (!in_array($ext, ['jpg', 'jpeg', 'gif', 'png'])) return response()->json(err('文件类型不是图片'));
         //把临时文件移动到指定的位置，并重命名
-        $path = public_path() . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'wchat_img' . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d') . DIRECTORY_SEPARATOR;
+        $path = public_path() . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'wchat_img' . DIRECTORY_SEPARATOR;
+        Log::info('path');
+        Log::info($path);
         $bool = $file->move($path, $file_name);
         if ($bool) {
-            $img_path = '/uploads/wchat_img/' . date('Y') . '/' . date('m') . '/' . date('d') . '/' . $file_name;
-            $data     = [
-                'domain_img_path' => get_domain() . $img_path,
-                'img_path'        => $img_path,
-            ];
-            return response()->json(succ($data));
+            $img_path = '/uploads/wchat_img/' . $file_name;
+            return $img_path;
         } else {
-            return response()->json(err("图片上传失败！"));
+            return '';
         }
 
-    }*/
+    }
 }

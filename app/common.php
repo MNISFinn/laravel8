@@ -84,6 +84,7 @@ if (!function_exists('uploadFileToCOS')) {
                     'Body'   => fopen($file, 'rb')
                 ]
             );
+            Log::info($result);
             $path   = 'https://' . (array)$result['Location'];
         } catch (\Exception $e) {
             // 请求失败
