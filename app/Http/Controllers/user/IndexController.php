@@ -65,6 +65,7 @@ class IndexController extends Controller {
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60 * 5, // 5小时
             'user_info'  => [
+                'user_id'     => $user_info['user_id'],
                 'user_name'   => $user_info['user_name'],
                 'user_avatar' => $user_info['avatar'],
                 'mobile'      => $user_info['mobile'],

@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\user\IndexController as UserIndex;
 use App\Http\Controllers\file\IndexController as FileIndex;
+use App\Http\Controllers\deliver\IndexController as DeliverIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,8 @@ Route::group([
     Route::get('get_permission', [PermissionController::class, 'getPermission']);
     // 用户管理
     Route::post('/user_list', [UserController::class, 'userList']);
+    // 配送员管理
+    Route::post('/deliver_register', [DeliverIndex::class, 'register']);
 });
 
 Route::group([
