@@ -26,6 +26,7 @@ class IndexController extends Controller {
         $true_name     = $request['true_name'];
         $mobile        = $request['mobile'];
         $email         = $request['email'];
+        $id_card       = $request['id_card'];
         $id_card_front = $request['id_card_front'];
         $id_card_back  = $request['id_card_back'];
         // 判断是否申请注册过配送员
@@ -44,6 +45,7 @@ class IndexController extends Controller {
             'true_name'     => $true_name,
             'mobile'        => $mobile,
             'email'         => $email,
+            'id_card'       => $id_card,
             'id_card_front' => $id_card_front,
             'id_card_back'  => $id_card_back,
             'status'        => self::STATUS_WAIT_TO_VERIFY,
@@ -54,6 +56,8 @@ class IndexController extends Controller {
             if (empty($deliver_info)) {
                 $result = Deliver::registerDeliver($data);
             } else {
+                // 已认证过则不允许修改身份信息
+                unset($data['true_name'], $data['id_card'], $data['id_card_front'], $data['id_card_back']);
                 $result = Deliver::modifyDelivery($data, $deliver_info['delivery_id']);
             }
 
