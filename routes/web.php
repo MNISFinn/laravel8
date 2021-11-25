@@ -8,6 +8,8 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\user\IndexController as UserIndex;
 use App\Http\Controllers\file\IndexController as FileIndex;
 use App\Http\Controllers\deliver\IndexController as DeliverIndex;
+use App\Http\Controllers\map\IndexController as MapIndex;
+use App\Http\Controllers\community\IndexController as CommunityIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,10 @@ Route::group([
     Route::post('/user_list', [UserController::class, 'userList']);
     // 配送员管理
     Route::post('/deliver_register', [DeliverIndex::class, 'register']);
+    // 地图地址
+    Route::post('/query_communities', [MapIndex::class, 'queryCommunities']);
+    // 小区管理
+    Route::post('/add_communities', [CommunityIndex::class, 'addCommunities']);
 });
 
 Route::group([
