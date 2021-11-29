@@ -16,4 +16,9 @@ class Address extends Model {
         $id = Address::insertGetId($data);
         return $id;
     }
+
+    static function queryAddressList($condition, $orderBy = 'desc') {
+        return Address::rightJoin('community', 'address.community_id', '=', 'community.community_id')
+            ->where($condition)->orderBy('id', $orderBy)->get()->toArray();
+    }
 }

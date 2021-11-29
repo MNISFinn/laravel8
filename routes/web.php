@@ -63,4 +63,5 @@ Route::group([
     Route::post('/upload_file', [FileIndex::class, 'uploadFile']);
     // 地址管理
     Route::post('/add_address', [AddressIndex::class, 'addAddress']);
+    Route::post('/get_addresses', [AddressIndex::class, 'queryAddressList']);
 });

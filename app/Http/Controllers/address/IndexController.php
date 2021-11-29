@@ -14,6 +14,7 @@ class IndexController extends Controller {
     const ADD_ADDRESS_EXCEPTION = 1000;
     const EMPTY_COMMUNITY_ERROR = 1001;
     const EMPTY_ADDRESS_ERROR = 1002;
+    const EMPTY_USER_ID_ERROR = 1003;
 
 
     /**
@@ -23,6 +24,9 @@ class IndexController extends Controller {
      */
     public function addAddress(Request $request) {
         $community = $request['community'];
+        if (empty($request['user_id'])) {
+            return responseResult(self::EMPTY_USER_ID_ERROR, '请登录');
+        }
         if (empty($request['address'])) {
             return responseResult(self::EMPTY_ADDRESS_ERROR, '请填写详细地址');
         }
@@ -30,6 +34,7 @@ class IndexController extends Controller {
             return responseResult(self::EMPTY_ADDRESS_ERROR, '请选择小区');
         }
         $insert_addr = [
+            'user_id'      => $request['user_id'],
             'community_id' => $community['id'],
             'address'      => $request['address']
         ];
@@ -42,5 +47,19 @@ class IndexController extends Controller {
             Log::info($exception);
             return responseResult(self::ADD_ADDRESS_EXCEPTION, '添加异常');
         }
+    }
+
+    public function queryAddressList(Request $request) {
+        if (empty($request['user_id'])) {
+            return responseResult(self::EMPTY_USER_ID_ERROR, '请登录');
+        }
+        $condition = [
+            'user_id' => $request['user_id'],
+            'address.status'  => 1
+        ];
+//        $list = Address::comm();
+        $list      = Address::queryAddressList($condition);
+        return responseResult(self::SUCCESS, '获取成功', $list);
+
     }
 }
