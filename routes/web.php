@@ -10,6 +10,7 @@ use App\Http\Controllers\file\IndexController as FileIndex;
 use App\Http\Controllers\deliver\IndexController as DeliverIndex;
 use App\Http\Controllers\map\IndexController as MapIndex;
 use App\Http\Controllers\community\IndexController as CommunityIndex;
+use App\Http\Controllers\address\IndexController as AddressIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,4 +61,6 @@ Route::group([
     Route::post('/user_info', [UserIndex::class, 'me']);
     // COS对象存储
     Route::post('/upload_file', [FileIndex::class, 'uploadFile']);
+    // 地址管理
+    Route::post('/add_address', [AddressIndex::class, 'addAddress']);
 });
