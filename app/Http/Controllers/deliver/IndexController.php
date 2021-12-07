@@ -29,6 +29,7 @@ class IndexController extends Controller {
         $id_card       = $request['id_card'];
         $id_card_front = $request['id_card_front'];
         $id_card_back  = $request['id_card_back'];
+        $community_id  = $request['community_id'];
         // 判断是否申请注册过配送员
         $deliver_info = Deliver::findDeliverByUserId($user_id);
         if ($deliver_info) {
@@ -45,9 +46,10 @@ class IndexController extends Controller {
             'true_name'     => $true_name,
             'mobile'        => $mobile,
             'email'         => $email,
-            'id_card'       => $id_card,
+            'id_card'       => encrypt($id_card), // 加密入库
             'id_card_front' => $id_card_front,
             'id_card_back'  => $id_card_back,
+            'community_id'  => $community_id,
             'status'        => self::STATUS_WAIT_TO_VERIFY,
             'register_time' => time()
         ];

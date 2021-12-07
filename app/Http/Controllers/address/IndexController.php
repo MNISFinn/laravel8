@@ -54,10 +54,9 @@ class IndexController extends Controller {
             return responseResult(self::EMPTY_USER_ID_ERROR, '请登录');
         }
         $condition = [
-            'user_id' => $request['user_id'],
-            'address.status'  => 1
+            'user_id'        => $request['user_id'],
+            'address.status' => 1
         ];
-//        $list = Address::comm();
         $list      = Address::queryAddressList($condition);
         return responseResult(self::SUCCESS, '获取成功', $list);
 
