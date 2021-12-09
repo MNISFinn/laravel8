@@ -11,6 +11,7 @@ use App\Http\Controllers\deliver\IndexController as DeliverIndex;
 use App\Http\Controllers\map\IndexController as MapIndex;
 use App\Http\Controllers\community\IndexController as CommunityIndex;
 use App\Http\Controllers\address\IndexController as AddressIndex;
+use App\Http\Controllers\deliveryOrder\IndexController as DeliveryOrderIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,4 +65,6 @@ Route::group([
     // 地址管理
     Route::post('/add_address', [AddressIndex::class, 'addAddress']);
     Route::post('/get_addresses', [AddressIndex::class, 'queryAddressList']);
+    // 配送单
+    Route::post('/place_order', [DeliveryOrderIndex::class, 'placeOrder']);
 });
