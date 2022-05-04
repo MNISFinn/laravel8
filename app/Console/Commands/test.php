@@ -37,11 +37,6 @@ class test extends Command
      * @return int
      */
     public function handle() {
-        $num = 0;
-        do {
-            $num ++;
-            echo $num;
-            Log::info($num);
-        } while (true);
+
     }
 }
